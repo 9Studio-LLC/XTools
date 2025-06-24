@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <title>XComp v1.0.6</title>
+  <style>
+    h2 {font-family: "Segoe UI"}
+  </style>
+<body>
+
+<h2>Paste your X code below:</h2>
+<textarea id="inputX" placeholder='e.g.
+set "x" = "5"
+sayplus "Hello, printer!" "PRN"
+say "x"
+'></textarea>
+
+<button onclick="transpile()">Compile to PowerShell</button>
+
+<h2>PowerShell output:</h2>
+<textarea id="outputPS" readonly></textarea>
+
+<script>
+const DEVICE_PORTS = new Set(['LPT1', 'LPT2', 'LPT3', 'LPT4', 'LPT5', 'LPT6', 'LPT7', 'LPT8', 'LPT9', 'COM1', 'COM2', 'COM3', 'COM4', 'COM5', 'COM6', 'COM7', 'COM8', 'COM9', 'AUX', 'CON', 'PRN', 'NUL']);
+
+function transpile() {
+  const input = document.getElementById('inputX').value;
+  const lines = input.split(/\r?\n/);
+let psLines = ['try {'];
+
+for (let line of lines) {
+  line = line.trim();
+  if (!line) continue;
+
+  if (line.toLowerCase().startsWith('say ')) {
+    // handle say command
+    let m = line.match(/^say\s+"(.+?)"$/i);
+    if (m) {
+      psLines.push(`  Write-Host "${m[1]}"`);
+      continue;
+    }
+    // other say matches
+  }
+
+  if (line.toLowerCase().startsWith('write ')) {
+    let m = line.match(/^write\s+(\w+)$/i);
+    if (m) {
+      psLines.push(`  $${m[1]} = Read-Host "Enter your name"`);
+      continue;
+    }
+  }
+
+  if (line.toLowerCase().startsWith('if ')) {
+    // convert if <...> then { ... }
+    // including loop logic if needed
+    // append generated code to psLines
+    continue;
+  }
+
+  // ... other commands
+
+  psLines.push(`  # ERROR: unknown command: ${line}`);
+}
+
+psLines.push('} catch {');
+psLines.push('  Write-Host "Error: $_"');
+psLines.push('  Read-Host "Press Enter to exit"');
+psLines.push('  exit 1');
+psLines.push('}');
+psLines.push('Read-Host "Press Enter to exit"');
+
+document.getElementById('outputPS').value = psLines.join('\n');
+}
+</script>
+
+</body>
+</html>

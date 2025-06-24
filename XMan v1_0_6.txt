@@ -1,0 +1,73 @@
+v1.0.6
+SET COMMAND
+Sets a variable to a number or string of text.
+Example: If my variable is called "X" and I wanted to set "X" to "Test", I'd do this:
+set var "X" = "Test"
+If my variable is called "Y" and I wanted to set "Y" to 5, I'd do this:
+set var "Y" = "5"
+If my variable is called "Z" and I wanted to set "Z" to 3, I'd do this:
+set var "Z" = "3"
+If my variable is called "A" and I wanted to set "A" to whatever Y+Z is, I'd do this:
+set var "A" = Y+Z
+If my variable is called "B" and I wanted to set "B' to whatever A is, I'd do this:
+set var "B" = A
+SAY COMMAND
+Outputs text to the console.
+Example: If I wanted to say "Hello World!", I'd do this:
+say "Hello World!"
+If I wanted to say whatever the variable A is (listed above), I'd do this:
+say A
+SayPlus COMMAND
+Outputs text to an MS-DOS destination.
+Example: If I wanted to say "Hello World!" to whatever is on port LPT4, I'd do this:
+sayplus "Hello World!" LPT4
+IF THEN WRAPPER
+Wrap this around your code to execute your code ONLY IF the conditions to run your code are met.
+Example: If my variable is called "C" and I wanted to set "C" to whatever Z+A is ONLY IF Y = 5 (listed above), I'd do this:
+if <"Y"="5"> then {
+set var "C" = Z+A
+}
+ELSE WRAPPER EXTENSION
+Put this after the } of an If then wrapper to execute your code ONLY IF one set of conditions are met. If they are NOT met, another set of instructions will run. You can put as many Else wrapper extensions as you want.
+Example: If my variables are called "D" and "E" and I wanted to set "D" to whatever A+C is ONLY IF Y=5, I'd write this. Then, if Y DOESN'T equal 5, I want "E" to be whatever Y+Z is (listed above). Thus, I'd finish by writing this:
+if <"Y"="5"> then {
+set var "D" = A+C
+} else <"X"="Test"> {
+set var "E" = Y+Z
+}
+IN CASE WRAPPER
+Wrap this around your code to run this code as long as the conditions to run your code are met.
+Example: If I want to say "Ain't I A Stinkah?" to LPT4 as long as Y=5 (listed above), I'd write this:
+Incase <"Y"="5"> then {
+sayplus "Ain't I A Stinkah?" LPT4
+}
+SET UP MY COMMAND (SUMC) WRAPPER
+Wrap this around your code to make a command you can easily call from wherever the moment your program loads in this wrapper.
+Example: If I want to make a command called "dofvariable" where, whenever I call it, it sets my variable "F" to "10", I'd write this:
+sumc "dofvariable" {
+set "F" = "10"
+}
+MY COMMAND
+You can input this command so long as the command has been set up with the Set up my command wrapper (listed above). For example, if I have already told my program what to do if I call "dofvariable" with the SUMC wrapper above, I can pop in "dofvariable" in the midst of my program so long as the program has already read the SUMC wrapper for "dofvariable".
+WRITE COMMAND
+Allows the user to type in anything they want. You can save this to a variable and it will be updated live.
+Example: If I was making a game in X and I want the user to put in their name and store it as a variable named "G", I'd write this:
+say "Welcome, fellow adventurer!"
+say "I hear you are interested in the wild world of magic, aren't you?"
+say "Well, guess what? I've got everything you need to become the master of these crazy powers!"
+say "But, wait... Say, what's your name, again?"
+write G
+STOP WRITING COMMAND
+Prevents the user from writing. When this is called, anything the user typed is erased.
+Compiler warning: If the compiler encounters this command in the program and this command is NOT in an if then loop, DO NOT put this in the compiled executable.
+Example: If I was continuing the scripting of my game in X (listed above) and I didn't want people to write swear words as their name, I'd write this:
+if <"G"="f***"> then {
+say "Woah woah woah! We don't allow swear words in this fantasy world. Try that again, chap!"
+stopwriting
+}
+write G
+CHANGE COMMAND
+Changes a variable. This is separate from the set command, as this command only applies to numerical variables. You can add and subtract to variables with this. For example, if my variable is called "H" and it's set to 7 and I wanted to add 4 to it, I'd write this:
+change "H" + 4
+
+THIS DOCUMENTATION MAY NOT BE 100% ACCURATE.
